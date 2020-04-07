@@ -67,7 +67,7 @@ ubuntu 18.04（Bionic）修复该[bug](https://bugs.launchpad.net/ubuntu/+source
 
 ### 总结：
 
-以上四种解决方案可以根据具体的生产环境来做相应的调整，这边推荐使用**本地DNS缓存**和&&增加CoreDNS的副本**来解决这个Conntrack竞争的问题
+以上四种解决方案可以根据具体的生产环境来做相应的调整，这边推荐使用**本地DNS缓存**和**增加CoreDNS的副本**来缓解这个Conntrack竞争的问题
 
 
 
