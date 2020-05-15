@@ -148,7 +148,9 @@ Corefile: |
         reload
         loop
         bind 169.254.25.10
-        forward . /etc/resolv.conf
+        forward . 10.244.154.167 {
+	    force_tcp
+        }
         prometheus :9253
     }
 ...
@@ -159,7 +161,7 @@ Corefile: |
 缓存，成功和拒绝的记录限制都为9984条，成功有效生存时间30s，拒绝的有效生存时间为5s 。如果请求未命中缓存，就强制使用TCP（避免conntrack race错误）将请求发送到`10.244.0.3`这个`__PILLAR__CLUSTER__DNS`地址。
 
 还有一个`.:53`区域，该区域处理如果解析请求不是针对Kubernetes内部运行的服务的情况。我们缓存请求并转发到`__PILLAR__UPSTREAM__SERVERS`上游DNS服务器。节点本地DNS `__PILLAR__UPSTREAM__SERVERS`从*kube-dns* configmap 查找值。该示例部署未设置它，因此默认为`/etc/resolv.conf`。请注意，节点本地DNS使用`dnsPolicy: Default`，这`/etc/resolv.conf`与节点上的相同。
-> 为了避免 coredns的 hosts和rewrite配置生效，得在nodelocaldns里 forward . /etc/resolv.conf 修改成 forward . __PILLAR__UPSTREAM__SERVERS
+> 为了避免 coredns的 hosts和rewrite配置不生效，得在nodelocaldns里 forward . /etc/resolv.conf 修改成 forward . __PILLAR__UPSTREAM__SERVERS
 
 ```yaml
 piVersion: v1
