@@ -159,7 +159,36 @@ Corefile: |
 缓存，成功和拒绝的记录限制都为9984条，成功有效生存时间30s，拒绝的有效生存时间为5s 。如果请求未命中缓存，就强制使用TCP（避免conntrack race错误）将请求发送到`10.244.0.3`这个`__PILLAR__CLUSTER__DNS`地址。
 
 还有一个`.:53`区域，该区域处理如果解析请求不是针对Kubernetes内部运行的服务的情况。我们缓存请求并转发到`__PILLAR__UPSTREAM__SERVERS`上游DNS服务器。节点本地DNS `__PILLAR__UPSTREAM__SERVERS`从*kube-dns* configmap 查找值。该示例部署未设置它，因此默认为`/etc/resolv.conf`。请注意，节点本地DNS使用`dnsPolicy: Default`，这`/etc/resolv.conf`与节点上的相同。
+> 为了避免 coredns的 hosts和rewrite配置生效，得在nodelocaldns里 forward . /etc/resolv.conf 修改成 forward . __PILLAR__UPSTREAM__SERVERS
 
+```yaml
+piVersion: v1
+kind: Service
+metadata:
+  name: kube-dns-upstream
+  namespace: kube-system
+  labels:
+    k8s-app: kube-dns
+    kubernetes.io/cluster-service: "true"
+    addonmanager.kubernetes.io/mode: Reconcile
+    kubernetes.io/name: "KubeDNSUpstream"
+spec:
+  ports:
+  - name: dns
+    port: 53
+    protocol: UDP
+    targetPort: 53
+  - name: dns-tcp
+    port: 53
+    protocol: TCP
+    targetPort: 53
+  selector:
+    k8s-app: kube-dns
+```
+获取`kube-dns-upstream`的service IP
+```shell
+kubectl get svc -n kube-system | grep kube-dns-upstream
+```
 ### 高可用性
 
 这部分高可用性取决于`Node Local DNS Cache`的pod对于信号的处理，如果Pod是正常终止，Pod将删除nodelocaldns这个虚拟网络地址和iptables的规则，然后将请求的流量从自身切换到集群中的*kube-dns*的Pod上，不影响正常的DNS解析，如果是强行OOM被kill掉的话，则不会删除iptables规则，这样的话将影响正常的DNS解析。
