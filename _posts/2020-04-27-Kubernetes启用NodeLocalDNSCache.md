@@ -149,7 +149,7 @@ Corefile: |
         loop
         bind 169.254.25.10
         forward . 10.244.154.167 {
-	    force_tcp
+            force_tcp
         }
         prometheus :9253
     }
