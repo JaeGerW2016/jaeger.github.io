@@ -406,7 +406,16 @@ spec:
         severity: warning
 ```
 
+### 验证：
+
+![](https://i.loli.net/2020/05/27/8oUh46OebzrPgJm.png)
 
 
 
+![](https://i.loli.net/2020/05/27/3T76Hw85NF2WMKA.png)
 
+![](https://i.loli.net/2020/05/27/nG4r3Qm9Djhwi7F.png)
+
+
+
+![](https://i.loli.net/2020/05/27/gjlTRXQExyKbdIU.png)
