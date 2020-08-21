@@ -194,5 +194,39 @@ subsets:
     protocol: TCP
 ...
 ```
+### helm upgrade
 
+```yaml
+
+prometheusSpec:
+  secrets:
+    - etcd-client-cert
+kubelet:
+  serviceMonitor:
+    https: true
+kubeControllerManager:
+  endpoints:
+    - 192.168.2.10
+    - 192.168.2.11
+kubeScheduler:
+  endpoints:
+    - 192.168.2.10
+    - 192.168.2.11
+kubeEtcd:
+  endpoints:
+    - 192.168.2.11
+    - 192.168.2.12
+    - 192.168.2.13
+  serviceMonitor:
+    insecureSkipVerify: true
+    scheme: https
+    caFile: "/etc/prometheus/secrets/etcd-client-cert/etcd-ca"
+    certFile: "/etc/prometheus/secrets/etcd-client-cert/etcd-client"
+    keyFile: "/etc/prometheus/secrets/etcd-client-cert/etcd-client-key"
+
+```
+```shell
+
+helm install -f override.yaml --name prom stable/prometheus-operator
+```
 创建完成后，隔一会儿去 Prometheus 的 Dashboard 中查看 targets，便会有 etcd 的监控项了：
