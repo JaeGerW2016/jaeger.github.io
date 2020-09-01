@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      Kubernetes教程：如何监控Nginx Ingress Controller的Metrics指标
-subtitle: 	配置集群现有Nginx Ingress Controller及Prometheus operator
+subtitle:   配置集群现有Nginx Ingress Controller及Prometheus operator
 date:       2020-08-31 
 author:     J
 catalog: true
@@ -29,7 +29,7 @@ tags:
 
 ```
 ...
-		- containerPort: 10254
+        - containerPort: 10254
           name: metrics
           protocol: TCP
 ...
