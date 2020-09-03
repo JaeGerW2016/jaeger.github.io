@@ -61,7 +61,7 @@ sudo sysctl --write net.ipv4.ip_forward=1
 - 创建2对Veth设备对,`veth_ns_011`和`veth_ns_021`绑定连接网桥`br1`
 - 分配`10.0.0.11`给 `veth_011`
 - 分配`10.0.0.21`给 `veth_021`
-- 分别在两个namespace中设置默认路由
+- 分别在两个`namespace`中设置默认路由
 
 ```shell
 sudo ip netns add netns_011
@@ -143,11 +143,11 @@ sudo ip netns exec netns_021 curl 10.0.0.11:8080
 ```shell
 ⚡ root@raspberrypi  ~  curl 10.0.0.11:8080
 2020-09-02 10:47:01, you're running http-server on 10.0.0.11
- ⚡ root@raspberrypi  ~  curl 10.0.0.21:8080
+⚡ root@raspberrypi  ~  curl 10.0.0.21:8080
 2020-09-02 10:47:09, you're running http-server on 10.0.0.21
- ⚡ root@raspberrypi  ~  ip netns exec netns_011 curl 10.0.0.21:8080
+⚡ root@raspberrypi  ~  ip netns exec netns_011 curl 10.0.0.21:8080
 2020-09-02 10:47:46, you're running http-server on 10.0.0.21
- ⚡ root@raspberrypi  ~  ip netns exec netns_021 curl 10.0.0.11:8080
+⚡ root@raspberrypi  ~  ip netns exec netns_021 curl 10.0.0.11:8080
 2020-09-02 10:47:54, you're running http-server on 10.0.0.11
 ```
 
@@ -187,10 +187,9 @@ sudo iptables \
 ```shell
 ⚡ root@raspberrypi  ~  curl 10.100.100.100:8080
 2020-09-03 03:38:48, you're running http-server on 10.0.0.11
-
 ⚡ root@raspberrypi  ~  ip netns exec netns_011 curl 10.100.100.100:8080
 ^C
- ✘ ⚡ root@raspberrypi  ~  ip netns exec netns_021 curl 10.100.100.100:8080
+✘ ⚡ root@raspberrypi  ~  ip netns exec netns_021 curl 10.100.100.100:8080
 2020-09-03 04:01:06, you're running http-server on 10.0.0.11
 
 ```
@@ -201,8 +200,8 @@ sudo iptables \
 
 ``` shell
 # br1 桥接设备启用混杂模式
- ⚡ root@raspberrypi  ~  ip link set br1 promisc on 
- ⚡ root@raspberrypi  ~  ip netns exec netns_011 curl 10.100.100.100:8080
+⚡ root@raspberrypi  ~  ip link set br1 promisc on 
+⚡ root@raspberrypi  ~  ip netns exec netns_011 curl 10.100.100.100:8080
 2020-09-03 04:14:45, you're running http-server on 10.0.0.11
 ```
 
@@ -276,7 +275,7 @@ sudo iptables \
 ```shell
 ⚡ root@raspberrypi  ~  curl 10.100.100.100:8080                                    
 2020-09-03 06:21:27, you're running http-server on 10.0.0.11
- ⚡ root@raspberrypi  ~  ip netns exec netns_021 curl 10.100.100.100:8080
+⚡ root@raspberrypi  ~  ip netns exec netns_021 curl 10.100.100.100:8080
 2020-09-03 06:24:11, you're running http-server on 10.0.0.11
 ```
 
@@ -333,13 +332,13 @@ sudo iptables \
 ```shell
 ⚡ root@raspberrypi  ~  curl 10.100.100.100:8080
 2020-09-03 06:37:41, you're running http-server on 10.0.0.21
- ⚡ root@raspberrypi  ~  curl 10.100.100.100:8080
+⚡ root@raspberrypi  ~  curl 10.100.100.100:8080
 2020-09-03 06:37:42, you're running http-server on 10.0.0.11
- ⚡ root@raspberrypi  ~  curl 10.100.100.100:8080
+⚡ root@raspberrypi  ~  curl 10.100.100.100:8080
 2020-09-03 06:37:44, you're running http-server on 10.0.0.21
- ⚡ root@raspberrypi  ~  curl 10.100.100.100:8080
+⚡ root@raspberrypi  ~  curl 10.100.100.100:8080
 2020-09-03 06:37:45, you're running http-server on 10.0.0.21
- ⚡ root@raspberrypi  ~  curl 10.100.100.100:8080
+⚡ root@raspberrypi  ~  curl 10.100.100.100:8080
 2020-09-03 06:37:46, you're running http-server on 10.0.0.11
 ```
 
